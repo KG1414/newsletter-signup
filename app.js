@@ -12,6 +12,7 @@ const myLocalPort = 3000;
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
+//ignore favicon
 function ignoreFavicon(req, res, next) {
     if (req.originalUrl.includes('favicon.ico')) {
         res.status(204).end()
