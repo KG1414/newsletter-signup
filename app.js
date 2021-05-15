@@ -2,13 +2,25 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const https = require("https");
+const favicon = require('express-favicon');
 
 const app = express();
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 const myLocalPort = 3000;
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+
+function ignoreFavicon(req, res, next) {
+    if (req.originalUrl.includes('favicon.ico')) {
+        res.status(204).end()
+    }
+    next();
+}
+
+app.use(ignoreFavicon);
+
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/signup.html");
@@ -62,7 +74,6 @@ app.post("/", function (req, res) {
             console.log(JSON.parse(data));
         })
     })
-
     request.write(jsonData);
     request.end();
 
